@@ -1,0 +1,27 @@
+.maincontainer{
+    background-image: linear-gradient(to bottom right, #00f, #0ff);
+    height: 100vh;
+    width: 100vw;
+    margin-top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.Form{
+    border: 2px dotted green;
+    background-color: rgb(255,255,255);
+}
+.heading{
+    text-align: center;
+    color: rgb(9,38,165);
+}
+
+.input{
+    border-radius: none;
+    border: none;
+    background-color: rgb(244,248,247);
+}
+.err{
+    color: red;
+}
+
