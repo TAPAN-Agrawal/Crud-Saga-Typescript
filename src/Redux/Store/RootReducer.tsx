@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import { StateInterface, counter } from '../Reducers/Reducer';
+import { StateInterface, todos } from '../Reducers/Reducer';
 export const rootReducer = combineReducers({
 
-    count: counter
+    todo: todos
 
 })
 
 export type RootState = {
-    count: StateInterface
+    todo: StateInterface
 };

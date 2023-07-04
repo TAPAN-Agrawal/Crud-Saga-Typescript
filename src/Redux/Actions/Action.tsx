@@ -1,6 +1,9 @@
 interface Cred {
   name: string,
-  password: string
+  password: string,
+  date: string,
+  gender: string,
+  address: string,
 }
 
 export interface AddEdit {

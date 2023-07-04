@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import "./Card.css";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
-function Cardcomp(Props) {
+
+function Cardcomp(Props:any) {
   const [toogle, settoogle] = useState(true);
 
   return (
@@ -14,7 +15,7 @@ function Cardcomp(Props) {
         
 
         <button className={toogle ? "button-inprogress" : " "} onClick={() => settoogle(!toogle)}>
-          {!toogle ? "completed" : "inprogress"}
+          {!toogle ? "completed" : "In-progress"}
         </button>
         <div>
         <EditOutlined className="editBtn" onClick={Props.onEdit} />

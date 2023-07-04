@@ -7,6 +7,8 @@ import { addData, deleteData, editData, getData } from "../../Redux/Actions/Acti
 import { RootState } from "@/Redux/Store/RootReducer";
 import classes from './Dashboard.module.css'
 import Cardcomp from "../Card/Cardcomp";
+import { useNavigate } from "react-router-dom";
+import { LeftOutlined } from "@ant-design/icons";
 
 function Dashboard() {
 
@@ -15,44 +17,82 @@ function Dashboard() {
     Title: string,
     subTitle: string,
   }
+  interface Info {
+    Title: string,
+    subTitle: string
+  }
 
 
-
-  const userData = useSelector((state: RootState) => state.count.arr);
+  const userData = useSelector((state: RootState) => state.todo.arr);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [info, setInfo] = useState({ Title:" ",subTitle:" " });
+  const [info, setInfo] = useState<Info>({ Title:"", subTitle:"" });
   const [type, setType] = useState("add");
+  const [titleErr, settitleErr] = useState("")
+  const [subtitleErr, setsubtitleErr] = useState("")
 
   const TitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    setInfo({ ...info, Title: e.target.value });
+    const value = e.target.value.trim();
+   
+      console.log("value",value);
+      console.log("Title",info.Title);
+      
+      
+   
+    if (value === "") {
+      settitleErr("Title is required")
+    }
+    else {
+      settitleErr("")
+    }
+    setInfo({ ...info, Title: value });
   };
   const subTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    setInfo({ ...info, subTitle: e.target.value });
+    const value = e.target.value.trim();
+    if (value === "") {
+      setsubtitleErr("SubTitle is required")
+    }
+    else {
+      setsubtitleErr("")
+    }
+    setInfo({ ...info, subTitle: value });
   };
 
   const showModal = () => {
     setIsModalOpen(true);
   };
   const handleOk = () => {
-    setIsModalOpen(false);
-    if (type === "add") {
-      dispatch(addData(info));
-      console.log("add");
-      console.log("thi das",info);
-      
-    } else {
-      setType("add")
-      dispatch(editData(info));
+
+    if (info.Title === "") {
+      settitleErr("Title is required")
     }
+    if (info.subTitle === "") {
+      setsubtitleErr("Subtitle is required")
+    }
+    if (info.Title !== "" && info.subTitle !== "" && titleErr === "" && subtitleErr === "") {
+      setIsModalOpen(false);
+      if (type === "add") {
+        dispatch(addData(info));
+
+
+      } else {
+        setType("add")
+        dispatch(editData(info));
+      }
+    }
+
   };
   const handleCancel = () => {
     setIsModalOpen(false);
   };
 
   const addHandler = () => {
-    setInfo({ Title: " ", subTitle: " ", })
+    setInfo({ Title: "", subTitle: "", })
+    settitleErr("")
+    setsubtitleErr("")
+
     showModal()
   }
 
@@ -65,6 +105,10 @@ function Dashboard() {
     dispatch(deleteData(id));
   };
 
+  const backHandler = () => {
+    navigate("/welcome");
+  }
+
   const columns = [
     {
       title: "Task",
@@ -74,7 +118,7 @@ function Dashboard() {
       title: "subTask",
       dataIndex: "subTitle",
     },
-    
+
     {
       title: "Actions",
       render: (record: Record) => (
@@ -94,44 +138,60 @@ function Dashboard() {
   }, []);
 
   return (
+    
     <div className={classes.main}>
-      
-        <Button type="primary" onClick={addHandler}>
-          ADD
-        </Button>
-        <Modal
-          title="Basic Modal"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          <label>Title</label>
-          <input name="title" onChange={TitleHandler} value={info.Title} />
+      <Button onClick={backHandler} style={{ backgroundColor: "blue", color: "white" }} className={classes.back}>Back</Button>
+
+
+
+
+      <Button type="primary" onClick={addHandler} style={{ backgroundColor: "blue" }} className={classes.add}>
+        ADD
+      </Button>
+      <Modal
+        title="Basic Modal"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+      >
+        <div className={classes.inp}>
+          <label style={{ marginRight: "22px" }}>Title:</label>
+          <input name="title" value={info.Title} onChange={TitleHandler} style={{ marginBottom: "2px" }} />
           <br />
-          <label>subTitle</label>
+          <span style={{ color: "red" }}>
+            {titleErr}
+          </span>
+        </div>
+        {/* <br/> */}
+        <div className={classes.inp}>
+          <label>subTitle:</label>
 
           <input name="title" onChange={subTitle} value={info.subTitle} />
           <br />
-          
-        </Modal>
-        {/* <Table columns={columns} dataSource={data} /> */}
+          <span style={{ color: "red" }}>
+            {subtitleErr}
+          </span>
+        </div>
+      </Modal>
+      {/* <Table columns={columns} dataSource={data} /> */}
       <div className={classes.todocontainer}>
-      {
-        data.map((item) => (
-                  <Cardcomp
-               
-                    id ={item.id}
-                    Title={item.Title}
-                    subTitle={item.subTitle}
-                    onEdit={()=>{handleEdit(item)}}
-                    onDelete={()=>{handleDelete(item.id)}}
-                   
-                  />
-                ))
-       }
+        {
+          data.map((item) => (
+            <Cardcomp
+
+              id={item.id}
+              Title={item.Title}
+              subTitle={item.subTitle}
+              onEdit={() => { handleEdit(item) }}
+              onDelete={() => { handleDelete(item.id) }}
+
+            />
+          ))
+        }
       </div>
-      </div>
-   
+
+    
+  </div>
   );
 }
 

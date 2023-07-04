@@ -47,20 +47,24 @@
     align-items: center;
   }
   .button-inprogress {
-    background-color: #e6c60f;
-    color: #f5f0f0;
+    background-color: #1a0cdd;
+    color: #f4f5f8;
     border-radius: 4px;
     padding: 2px 5px;
     cursor: pointer;
+    height: 30px;
+    width: 100px;
   }
 
   
   button {
-    background-color: #32e60f;
-    color: #f5f0f0;
+    background-color: #105003;
+    color: #e3f3e2;
     border-radius: 4px;
     padding: 2px 5px;
     cursor: pointer;
+    height: 30px;
+    width: 100px;
   }
 
   .editBtn{

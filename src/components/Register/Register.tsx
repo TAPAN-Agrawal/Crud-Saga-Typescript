@@ -5,6 +5,9 @@ import { addUserCredentials } from "../../Redux/Actions/Action";
 import { Link, useNavigate } from "react-router-dom";
 import classes from './Register.module.css'
 import TextArea from "antd/es/input/TextArea";
+import { RadioChangeEvent } from "antd/lib/radio";
+import moment from "moment";
+
 
 
 
@@ -12,7 +15,10 @@ function Register() {
 
   interface Info {
     name: string,
-    password: string
+    password: string,
+    date: string,
+    gender: string,
+    address: string,
   }
 
   interface ValidateErrorEntity {
@@ -25,10 +31,16 @@ function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
-  const [info, setInfo] = useState<Info>({ name: " ", password: " " });
+  const [info, setInfo] = useState<Info>({ name: " ", password: " ", date: "", gender: "", address: "" });
+
   const [nameErr, setnameErr] = useState("")
   const [passwordErr, setpasswordErr] = useState("")
-  const [err, seterr] = useState("")
+  const [dateErr, setdateErr] = useState("")
+  const [genderErr, setgenderErr] = useState("")
+  const [addressErr, setaddressErr] = useState("")
+
+
+
 
   const nameHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
@@ -59,6 +71,44 @@ function Register() {
     }
   };
 
+  const dateHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.trim();
+    console.log("first", typeof (value));
+
+    if (value === "") {
+      setdateErr("date cannot be empty");
+    }
+    else {
+      setdateErr("")
+      setInfo({ ...info, date: value });
+    }
+
+  }
+
+  const genderHandler = (e: RadioChangeEvent) => {
+
+    const value = e.target.value;
+    if (value === "") {
+      setgenderErr("gender cannot be empty");
+    }
+    else {
+      setgenderErr("");
+      setInfo({ ...info, gender: value });
+    }
+
+  }
+  const addressHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value
+    if (value === "") {
+      setaddressErr("address cannot be empty")
+    }
+    else {
+      setaddressErr("")
+      setInfo({ ...info, address: value })
+    }
+  }
+
+
 
   const submitHandler = (e: FormEvent) => {
 
@@ -69,8 +119,25 @@ function Register() {
     if (info.password === " ") {
       setpasswordErr("Password cannot be empty")
     }
+    if (info.date === "") {
+      setdateErr("date cannot be empty")
+    }
+    if (info.gender === "") {
+      setgenderErr("gender cannot be empty")
+    }
+    if (info.address === "") {
+      setaddressErr("Address cannot be empty")
+    }
 
-    if ((nameErr === "") && (info.name !== " ") && (passwordErr === "") && (info.password !== " ")) {
+
+    if ((nameErr === "") && (info.name !== " ")
+      && (passwordErr === "") && (info.password !== " ")
+      && (dateErr === "") && (info.date !== "")
+      && (genderErr === "") && (info.gender !== "")
+      && (addressErr === "") && (info.address !== "")
+    ) {
+      console.log(info);
+
       dispatch(addUserCredentials(info))
       navigate("/login")
     }
@@ -132,29 +199,42 @@ function Register() {
             {passwordErr}
           </span>
         </Form.Item >
-        <Form.Item label="Birthday" className={classes.form_item}
-        >
-          <DatePicker />
-        </Form.Item>
-       
-        <Form.Item label="Radio" name="radio" className={classes.form_item}>
-          <Radio.Group>
-            <Radio value="apple"> Male </Radio>
-            <Radio value="pear"> Female </Radio>
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item label="Address" name="textarea" className={classes.form_item} style={{height:"15vh"}}>
-          <TextArea rows={4} />
-        </Form.Item>
-       <div className={classes.btn}>
-       <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
-          <Button type="primary" htmlType="submit" onClick={submitHandler} >
-            Submit
-          </Button>
-        </Form.Item>
-        <Link to="/login">already have account login?</Link>
+        <Form.Item label="Birthday" className={classes.form_item}>
+          <Input type="date" onChange={dateHandler} defaultValue=" " /><br />
+          <span className={classes.err}>
 
-       </div>
+            {dateErr}
+          </span>
+
+        </Form.Item>
+
+        <Form.Item label="Gender" name="radio" className={classes.form_item}>
+          <Radio.Group onChange={genderHandler}
+          >
+            <Radio value="Male"> Male </Radio>
+            <Radio value="Female"> Female </Radio>
+          </Radio.Group><br />
+          <span className={classes.err}>
+
+            {genderErr}
+          </span>
+        </Form.Item>
+        <Form.Item label="Address" name="textarea" className={classes.form_item} style={{ height: "15vh" }}>
+          <TextArea rows={4} onChange={addressHandler} /><br />
+          <span className={classes.err}>
+
+            {addressErr}
+          </span>
+        </Form.Item>
+        <div className={classes.btn}>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
+            <Button type="primary" htmlType="submit" onClick={submitHandler} >
+              Submit
+            </Button>
+          </Form.Item>
+          <Link to="/login">already have account login?</Link>
+
+        </div>
 
 
       </Form>

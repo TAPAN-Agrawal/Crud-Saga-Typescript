@@ -1,7 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { Button, Form, Input } from "antd";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { StateInterface } from "@/Redux/Reducers/Reducer";
 import { RootState } from "../../Redux/Store/RootReducer";
 import classes from './Login.module.css'
@@ -25,11 +25,11 @@ function Login() {
 
 
 
-  const userName = useSelector((state: RootState) => state.count.name);
-  const userPassword = useSelector((state: RootState) => state.count.password);
+  const userName = useSelector((state: RootState) => state.todo.name);
+  const userPassword = useSelector((state: RootState) => state.todo.password);
   const navigate = useNavigate()
 
-  const [info, setInfo] = useState<Info>({ name: " ", password: " " });
+  const [info, setInfo] = useState<Info>({ name: "", password: "" });
   const [nameErr, setnameErr] = useState("")
   const [passwordErr, setpasswordErr] = useState("")
   const [err, setErr] = useState("")
@@ -42,6 +42,7 @@ function Login() {
       setnameErr("")
       setInfo({ ...info, name: value });
     }
+console.log(info.name);
 
   }
   const passwordHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -69,17 +70,21 @@ function Login() {
     if (info.password === " ") {
       setpasswordErr("Password cannot be empty")
     }
-    if (((userName === info.name) && (userPassword === info.password)) && (userName !== " ") && (userPassword !== " ")) {
+    if ((userName === info.name) && (userPassword === info.password) && (userName !== " ") && (userPassword !== " ")) {
 
       if ((nameErr === "") && (info.name !== " ") && (passwordErr === "") && (info.password !== " ")) {
 
         navigate('/welcome', { state: userName });
       }
     }
-    else {
-      setErr("unauthorized user")
+    else if(info.name !== " " && info.password !== " "){
+      setErr("invalid user")
     }
-
+    else{
+      console.log("first");
+      
+    }
+    
   };
 
   const onFinish = (values: ValidateErrorEntity) => {
@@ -134,13 +139,15 @@ function Login() {
           <span className={classes.err}>{err}</span>
             </span>
           </Form.Item>
-          <div className={classes.btn}>
+          <div className={classes.btnmain}>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }} className={classes.form_item}>
             <Button type="primary" htmlType="submit" onClick={submitHandler} className={classes.btn}>
               Submit
             </Button>
           </Form.Item>
-        
+        <div className={classes.link}>
+        <Link to="/">dont have account register</Link>
+        </div>
           </div>
       </Form>
     </div>
