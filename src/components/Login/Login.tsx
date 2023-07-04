@@ -32,7 +32,7 @@ function Login() {
   const [info, setInfo] = useState<Info>({ name: " ", password: " " });
   const [nameErr, setnameErr] = useState("")
   const [passwordErr, setpasswordErr] = useState("")
-const[err,setErr]=useState("")
+  const [err, setErr] = useState("")
   const nameHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
     if (value === "") {
@@ -63,12 +63,12 @@ const[err,setErr]=useState("")
   };
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
-    if(info.name === " "){
+    if (info.name === " ") {
       setnameErr("name cannot be empty")
-     }
-     if(info.password === " "){
+    }
+    if (info.password === " ") {
       setpasswordErr("Password cannot be empty")
-     }
+    }
     if (((userName === info.name) && (userPassword === info.password)) && (userName !== " ") && (userPassword !== " ")) {
 
       if ((nameErr === "") && (info.name !== " ") && (passwordErr === "") && (info.password !== " ")) {
@@ -77,7 +77,7 @@ const[err,setErr]=useState("")
       }
     }
     else {
-     setErr("unauthorized user")
+      setErr("unauthorized user")
     }
 
   };
@@ -91,7 +91,7 @@ const[err,setErr]=useState("")
   };
 
   return (
-    <div className={classes.maincontainer}>
+    <div className={classes.main}>
       <Form
         name="basic"
         labelCol={{ span: 8 }}
@@ -101,16 +101,18 @@ const[err,setErr]=useState("")
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        className={classes.Form}
+        layout="vertical"
+        className={classes.forms}
 
       >
-        <div >
+        
           <h1 className={classes.heading}>Login</h1>
 
           <Form.Item
             label="Username"
             name="username"
             rules={[{ required: true, message: "Please input your username!" }]}
+            className={classes.form_item}
           >
             <Input onChange={nameHandler} />
             <span className={classes.err}>
@@ -123,20 +125,23 @@ const[err,setErr]=useState("")
             label="Password"
             name="password"
             rules={[{ required: true, message: "Please input your password!" }]}
+            className={classes.form_item}
           >
             <Input.Password onChange={passwordHandler} />
             <span className={classes.err}>
 
-              {passwordErr}
+              {passwordErr}<br/>
+          <span className={classes.err}>{err}</span>
             </span>
           </Form.Item>
-<span className={classes.err}>{err}</span>
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit" onClick={submitHandler}>
+          <div className={classes.btn}>
+          <Form.Item wrapperCol={{ offset: 8, span: 16 }} className={classes.form_item}>
+            <Button type="primary" htmlType="submit" onClick={submitHandler} className={classes.btn}>
               Submit
             </Button>
           </Form.Item>
-        </div>
+        
+          </div>
       </Form>
     </div>
   );

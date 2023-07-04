@@ -1,9 +1,10 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, DatePicker, Form, Input, Radio } from "antd";
 import { useDispatch } from 'react-redux';
 import { addUserCredentials } from "../../Redux/Actions/Action";
 import { Link, useNavigate } from "react-router-dom";
 import classes from './Register.module.css'
+import TextArea from "antd/es/input/TextArea";
 
 
 
@@ -25,16 +26,16 @@ function Register() {
   const navigate = useNavigate()
 
   const [info, setInfo] = useState<Info>({ name: " ", password: " " });
-  const[nameErr,setnameErr] = useState("")
-const[passwordErr,setpasswordErr] = useState("")
-const[err,seterr]=useState("")
+  const [nameErr, setnameErr] = useState("")
+  const [passwordErr, setpasswordErr] = useState("")
+  const [err, seterr] = useState("")
 
   const nameHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
-    if(value===""){
+    if (value === "") {
       setnameErr("name cannot be empty")
     }
-    else{
+    else {
       setnameErr("")
       setInfo({ ...info, name: value });
     }
@@ -57,24 +58,24 @@ const[err,seterr]=useState("")
       setInfo({ ...info, password: value });
     }
   };
-  
+
 
   const submitHandler = (e: FormEvent) => {
 
     e.preventDefault();
-   if(info.name === " "){
-    setnameErr("name cannot be empty")
-   }
-   if(info.password === " "){
-    setpasswordErr("Password cannot be empty")
-   }
-    
-    if((nameErr === "") && (info.name !== " ") && (passwordErr === "") && (info.password !== " ")){
+    if (info.name === " ") {
+      setnameErr("name cannot be empty")
+    }
+    if (info.password === " ") {
+      setpasswordErr("Password cannot be empty")
+    }
+
+    if ((nameErr === "") && (info.name !== " ") && (passwordErr === "") && (info.password !== " ")) {
       dispatch(addUserCredentials(info))
       navigate("/login")
     }
-    
-   
+
+
 
   };
 
@@ -89,7 +90,7 @@ const[err,seterr]=useState("")
 
 
   return (
-    <div className={classes.heading}>
+    <div className={classes.main}>
 
       <Form
         name="basic"
@@ -100,44 +101,62 @@ const[err,seterr]=useState("")
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="off"
-        className={classes.form}
+        layout="vertical"
+        className={classes.forms}
 
       >
-        <div >
-          <h1 >Register</h1>
 
-          <Form.Item
-            label="Username"
-            name="username"
-            rules={[{ required: true, message: "Please input your username!" }]}
-          >
-            <Input onChange={nameHandler} />
-                   <span className="err">
-                   {nameErr}
+        <h1 className={classes.heading}>Register</h1>
 
-                   </span>
-          </Form.Item>
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-          >
-            <Input.Password onChange={passwordHandler} />
-            <span className="err">
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Please input your username!" }]}
+          className={classes.form_item}
+        >
+          <Input onChange={nameHandler} />
+          <span className={classes.err}>
+            {nameErr}
+
+          </span>
+        </Form.Item>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+          className={classes.form_item}
+        >
+          <Input.Password onChange={passwordHandler} />
+          <span className={classes.err}>
 
             {passwordErr}
-                   </span>
-          </Form.Item>
+          </span>
+        </Form.Item >
+        <Form.Item label="Birthday" className={classes.form_item}
+        >
+          <DatePicker />
+        </Form.Item>
+       
+        <Form.Item label="Radio" name="radio" className={classes.form_item}>
+          <Radio.Group>
+            <Radio value="apple"> Male </Radio>
+            <Radio value="pear"> Female </Radio>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item label="Address" name="textarea" className={classes.form_item} style={{height:"15vh"}}>
+          <TextArea rows={4} />
+        </Form.Item>
+       <div className={classes.btn}>
+       <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
+          <Button type="primary" htmlType="submit" onClick={submitHandler} >
+            Submit
+          </Button>
+        </Form.Item>
+        <Link to="/login">already have account login?</Link>
 
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
-            <Button type="primary" htmlType="submit" onClick={submitHandler} className={classes.form} >
-              Submit
-            </Button>
-          </Form.Item>
-          <Link to="/login">already have account login?</Link>
+       </div>
 
 
-        </div>
       </Form>
     </div>
   );
