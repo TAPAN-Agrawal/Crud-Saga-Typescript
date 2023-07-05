@@ -8,7 +8,7 @@ import { RootState } from "@/Redux/Store/RootReducer";
 
 function Welcome() {
   const location = useLocation();
-  const name = useSelector((state: RootState)=>state.todo.name)
+  // const name = useSelector((state: RootState)=>state.todo.name)
   const navigate = useNavigate()
 
   const backHandler = () => {
@@ -18,7 +18,7 @@ function Welcome() {
   return <div style={{ backgroundColor: "rgb(0,28,255)" }}>
     <Button onClick={backHandler} style={{ backgroundColor: "blue", color: "white" }}>Back</Button>
     <div className={classes.main}>
-      <h3 className={classes.h3}>Welcome!  {name}</h3><br /><br />
+      {/* <h3 className={classes.h3}>Welcome!  {name}</h3><br /><br /> */}
       <Button onClick={() => { navigate("/dashboard") }} className={classes.Button}>Dashboard</Button>
 
     </div>

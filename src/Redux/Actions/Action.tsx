@@ -13,12 +13,20 @@ export interface AddEdit {
  status?: string,
 }
 
+export const loginSetter =(data:string)=>{
+
+  return {
+    type:"LOGIN_SETTER",
+    payload: data
+  }
+}
+
 
 
 
 export const addUserCredentials = (data: Cred) => {
   return {
-    type: "ADD_USER_CREDENTIALS",
+    type: "ADD_CRED",
     payload: data,
   }
 }
@@ -28,6 +36,13 @@ export const getData = () => {
     type: "GET_DATA",
   }
 }
+export const getDataId = (id:number) => {
+  return {
+    type: "GET_DATA_ID",
+    payload: id,
+  }
+}
+
 
 
 export const addData = (data: AddEdit) => {

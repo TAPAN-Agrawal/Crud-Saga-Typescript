@@ -3,7 +3,7 @@ import { Button, Space, Table, Tag } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "antd";
-import { addData, deleteData, editData, getData, statusChange } from "../../Redux/Actions/Action";
+import { addData, deleteData, editData, getData, getDataId, statusChange } from "../../Redux/Actions/Action";
 import { RootState } from "@/Redux/Store/RootReducer";
 import classes from './Dashboard.module.css'
 import Cardcomp from "../Card/Cardcomp";
@@ -19,6 +19,9 @@ function Dashboard() {
     status?: string
 
   }
+
+
+  
   interface Info {
     Title: string,
     subTitle: string,
@@ -26,7 +29,12 @@ function Dashboard() {
   }
 
 
-  const userData = useSelector((state: RootState) => state.todo.arr);
+  const username = useSelector((state: RootState) => state.todo.loggedInUser);
+  const userId = useSelector((state: RootState) => state.todo.loggedInUserId);
+  const todolist = useSelector((state: RootState) => state.todo.temptodo)
+
+  console.log("user das",username);
+  
   const dispatch = useDispatch();
   const navigate = useNavigate()
 
@@ -143,11 +151,15 @@ function Dashboard() {
     },
   ];
 
-  const data = userData;
+  // const data = userData;
 
   useEffect(() => {
-    dispatch(getData());
+console.log("use Effect",userId);
 
+    // dispatch(setid())
+    // dispatch(getData());
+    dispatch(getDataId(userId));
+    console.log("temp",todolist)
   }, []);
 
   return (
@@ -189,16 +201,16 @@ function Dashboard() {
       {/* <Table columns={columns} dataSource={data} /> */}
       <div className={classes.todocontainer}>
         {
-          data.map((item) => (
+          todolist.map((item) => (
             <Cardcomp
 
               id={item.id}
               Title={item.Title}
               subTitle={item.subTitle}
               status={item.status}
-              onEdit={() => { handleEdit(item) }}
-              onDelete={() => { handleDelete(item.id) }}
-              onStatus={() => { handleStatus(item) }}
+              // onEdit={() => { handleEdit(item) }}
+              // onDelete={() => { handleDelete(item.id) }}
+              // onStatus={() => { handleStatus(item) }}
             />
           ))
         }

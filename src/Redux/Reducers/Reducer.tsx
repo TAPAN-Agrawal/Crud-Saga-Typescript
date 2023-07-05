@@ -4,26 +4,29 @@ interface Action {
     payload: {
         name: string,
         password: string,
-        date: string,
-        gender: string,
-        address: string,
+        date?: string,
+        gender?: string,
+        address?: string,
     }
-    
+
 }
-interface Arr {
-    id: number,
+export interface Arr {
+    id?: number,
     Title: string,
     subTitle: string,
     status?: string
 }
-export interface StateInterface {
-
+export interface U {
     name: string,
     password: string,
-    date: string,
-    gender: string,
-    address: string,
-    arr: Arr[]
+
+    list: Arr[]
+}
+export interface StateInterface {
+    loggedInUser: string,
+    loggedInUserId:number ,
+    temptodo:any[]
+    users: U[]
 }
 
 
@@ -31,37 +34,50 @@ export interface StateInterface {
 
 const initialState: StateInterface = {
 
-        
-    name: " ",
-    password: " ",
-    date: "",
-    gender: "",
-    address: "",
-    arr: []
+    loggedInUser: " ",
+    loggedInUserId: -1,
+
+    users: [],
+    temptodo:[]
+
+
 }
 export const todos = (state: StateInterface = initialState, action: Action) => {
     switch (action.type) {
 
 
-        case 'ADD_USER_CREDENTIALS':
+        // case 'ADD_USER_CREDENTIALS':
+        //     return {
+        //         ...state,
+        //         name: action.payload.name,
+        //         password: action.payload.password,
+        //         date: action.payload.date,
+        //         gender: action.payload.gender,
+        //         address: action.payload.address,
+
+        //     }
+          case 'ID_SET' :
+            return {
+                    ...state,
+                    loggedInUserId:action.payload
+            }
+
+
+        case 'LOGIN_SETTER':
             return {
                 ...state,
-                name: action.payload.name,
-                password: action.payload.password,
-                date: action.payload.date,
-                gender: action.payload.gender,
-                address: action.payload.address,
-
+                loggedInUser: action.payload
             }
 
 
         case 'SET-DATA':
             return {
                 ...state,
-                arr: action.payload
+                temptodo: action.payload
+               
             }
 
-            
+
 
 
 

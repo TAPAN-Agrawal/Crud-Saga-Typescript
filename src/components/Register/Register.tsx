@@ -30,8 +30,8 @@ function Register() {
 
 
   const dispatch = useDispatch();
-  const credentialsName = useSelector((state: RootState) => state.todo.name)
-  const credentialsPass = useSelector((state: RootState) => state.todo.password)
+  // const credentialsName = useSelector((state: RootState) => state.todo.name)
+  // const credentialsPass = useSelector((state: RootState) => state.todo.password)
 
   const navigate = useNavigate()
 
@@ -113,17 +113,17 @@ function Register() {
     }
   }
 
-  const dupliate = () => {
-    if (info.name === credentialsName) {
-      setErr("user  already exists")
+  // const dupliate = () => {
+  //   if (info.name === credentialsName) {
+  //     setErr("user  already exists")
       
-    }
-    else {
-      setErr("")
+  //   }
+  //   else {
+  //     setErr("")
       
-    }
+  //   }
 
-  }
+  // }
 
   const submitHandler = (e: FormEvent) => {
 
@@ -145,47 +145,55 @@ function Register() {
       setaddressErr("Address cannot be empty")
     }
 
-    if ((nameErr === "") && (info.name !== " ")
-    && (passwordErr === "") && (info.password !== " ")
-    && (dateErr === "") && (info.date !== "")
-    && (genderErr === "") && (info.gender !== "")
-    && (addressErr === "") && (info.address !== "")
-    && (info.name !== credentialsName)
-  ) {
+  //   if ((nameErr === "") && (info.name !== " ")
+  //   && (passwordErr === "") && (info.password !== " ")
+  //   && (dateErr === "") && (info.date !== "")
+  //   && (genderErr === "") && (info.gender !== "")
+  //   && (addressErr === "") && (info.address !== "")
+  //   && (info.name !== credentialsName)
+  // ) {
  
   
-    dispatch(addUserCredentials(info))
-    navigate("/login")
+  //   dispatch(addUserCredentials(info))
+  //   navigate("/login")
   
      
-  }
-  else if(
-    (nameErr === "") && (info.name !== " ")
-    && (passwordErr === "") && (info.password !== " ")
-    && (dateErr === "") && (info.date !== "")
-    && (genderErr === "") && (info.gender !== "")
-    && (addressErr === "") && (info.address !== "")
-    && (info.name === credentialsName)
-  ){
-    alert("user already axists")
-  }
-  else{
+  // }
+  // else if(
+  //   (nameErr === "") && (info.name !== " ")
+  //   && (passwordErr === "") && (info.password !== " ")
+  //   && (dateErr === "") && (info.date !== "")
+  //   && (genderErr === "") && (info.gender !== "")
+  //   && (addressErr === "") && (info.address !== "")
+  //   && (info.name === credentialsName)
+  // ){
+  //   alert("user already axists")
+  // }
+  // else{
 
-  }
+  // }
 
-    // if ((nameErr === "") && (info.name !== " ")
-    //   && (passwordErr === "") && (info.password !== " ")
-    //   && (dateErr === "") && (info.date !== "")
-    //   && (genderErr === "") && (info.gender !== "")
-    //   && (addressErr === "") && (info.address !== "")
-    //   && (err === "")
-    // ) {
+  if ((nameErr === "") && (info.name !== " ")
+  && (passwordErr === "") && (info.password !== " ")
+  && (dateErr === "") && (info.date !== "")
+  && (genderErr === "") && (info.gender !== "")
+  && (addressErr === "") && (info.address !== "")
+  
+) {
+
+
+  dispatch(addUserCredentials(info))
+  navigate("/login")
+
    
-        
-    
+}
 
-    // }
+else{
 
+}
+
+
+   
 
 
   };

@@ -15,16 +15,16 @@ function Cardcomp(Props:any) {
       <div className="all-btn">
         
 
-        <button 
+        {/* <button 
         className={Props.status !== "completed" ? "button-inprogress" : " "}
         onClick={Props.onStatus}
          >
         {Props.status}
-        </button>
+        </button> */}
         <div>
          
-        <EditOutlined className="editBtn" onClick={Props.onEdit} />
-        <DeleteOutlined className="deleteBtn" onClick={Props.onDelete} />
+        {/* <EditOutlined className="editBtn" onClick={Props.onEdit} />
+        <DeleteOutlined className="deleteBtn" onClick={Props.onDelete} /> */}
         </div>
       </div>
       <div className="strip">

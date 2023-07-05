@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { StateInterface } from "@/Redux/Reducers/Reducer";
 import { RootState } from "../../Redux/Store/RootReducer";
 import classes from './Login.module.css'
+import { addUserCredentials, loginSetter } from "../../Redux/Actions/Action";
 
 
 
@@ -24,9 +25,9 @@ function Login() {
 
 
 
-
-  const userName = useSelector((state: RootState) => state.todo.name);
-  const userPassword = useSelector((state: RootState) => state.todo.password);
+const dispatch = useDispatch()
+  // const userName = useSelector((state: RootState) => state.todo.name);
+  // const userPassword = useSelector((state: RootState) => state.todo.password);
   const navigate = useNavigate()
 
   const [info, setInfo] = useState<Info>({ name: "", password: "" });
@@ -42,7 +43,7 @@ function Login() {
       setnameErr("")
       setInfo({ ...info, name: value });
     }
-    console.log(info.name);
+    // console.log(info.name);
 
   }
   const passwordHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,34 +65,36 @@ function Login() {
   };
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
-    if (info.name === "") {
-      setnameErr("name cannot be empty")
-    }
-    if (info.password === "") {
-      setpasswordErr("Password cannot be empty")
-    }
-    if ((userName === info.name)
-      && (userPassword === info.password)
-      && (userName !== "")
-      && (userPassword !== "")
-      && (nameErr === "")
-      && (info.name !== "")
-      && (passwordErr === "")
-      && (info.password !== "")) {
 
-     navigate('/welcome', { state: userName });
+    dispatch(loginSetter(info.name))
+    // if (info.name === "") {
+    //   setnameErr("name cannot be empty")
+    // }
+    // if (info.password === "") {
+    //   setpasswordErr("Password cannot be empty")
+    // }
+    // if ((userName === info.name)
+    //   && (userPassword === info.password)
+    //   && (userName !== "")
+    //   && (userPassword !== "")
+    //   && (nameErr === "")
+    //   && (info.name !== "")
+    //   && (passwordErr === "")
+    //   && (info.password !== "")) {
 
-    }
-    else if ((userName === info.name) &&  (userPassword !== info.password) && info.name !== "" && info.password !== ""){
-      setErr("Password does not match")
-    }
-    else if (info.name !== "" && info.password !== "") {
-      setErr("invalid user")
-    }
-    else {
-      console.log("first");
+    //  navigate('/welcome', { state: userName });
 
-    }
+    // }
+    // else if ((userName === info.name) &&  (userPassword !== info.password) && info.name !== "" && info.password !== ""){
+    //   setErr("Password does not match")
+    // }
+    // else if (info.name !== "" && info.password !== "") {
+    //   setErr("invalid user")
+    // }
+    // else {
+    //   console.log("first");
+
+    // }
 
   };
 
