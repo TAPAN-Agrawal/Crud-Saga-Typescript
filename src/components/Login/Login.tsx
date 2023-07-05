@@ -42,7 +42,7 @@ function Login() {
       setnameErr("")
       setInfo({ ...info, name: value });
     }
-console.log(info.name);
+    console.log(info.name);
 
   }
   const passwordHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,27 +64,35 @@ console.log(info.name);
   };
   const submitHandler = (e: FormEvent) => {
     e.preventDefault();
-    if (info.name === " ") {
+    if (info.name === "") {
       setnameErr("name cannot be empty")
     }
-    if (info.password === " ") {
+    if (info.password === "") {
       setpasswordErr("Password cannot be empty")
     }
-    if ((userName === info.name) && (userPassword === info.password) && (userName !== " ") && (userPassword !== " ")) {
+    if ((userName === info.name)
+      && (userPassword === info.password)
+      && (userName !== "")
+      && (userPassword !== "")
+      && (nameErr === "")
+      && (info.name !== "")
+      && (passwordErr === "")
+      && (info.password !== "")) {
 
-      if ((nameErr === "") && (info.name !== " ") && (passwordErr === "") && (info.password !== " ")) {
+     navigate('/welcome', { state: userName });
 
-        navigate('/welcome', { state: userName });
-      }
     }
-    else if(info.name !== " " && info.password !== " "){
+    else if ((userName === info.name) &&  (userPassword !== info.password) && info.name !== "" && info.password !== ""){
+      setErr("Password does not match")
+    }
+    else if (info.name !== "" && info.password !== "") {
       setErr("invalid user")
     }
-    else{
+    else {
       console.log("first");
-      
+
     }
-    
+
   };
 
   const onFinish = (values: ValidateErrorEntity) => {
@@ -110,45 +118,45 @@ console.log(info.name);
         className={classes.forms}
 
       >
-        
-          <h1 className={classes.heading}>Login</h1>
 
-          <Form.Item
-            label="Username"
-            name="username"
-            rules={[{ required: true, message: "Please input your username!" }]}
-            className={classes.form_item}
-          >
-            <Input onChange={nameHandler} />
-            <span className={classes.err}>
-              {nameErr}
+        <h1 className={classes.heading}>Login</h1>
 
-            </span>
-          </Form.Item>
+        <Form.Item
+          label="Username"
+          name="username"
+          rules={[{ required: true, message: "Please input your username!" }]}
+          className={classes.form_item}
+        >
+          <Input onChange={nameHandler} />
+          <span className={classes.err}>
+            {nameErr}
 
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, message: "Please input your password!" }]}
-            className={classes.form_item}
-          >
-            <Input.Password onChange={passwordHandler} />
-            <span className={classes.err}>
+          </span>
+        </Form.Item>
 
-              {passwordErr}<br/>
-          <span className={classes.err}>{err}</span>
-            </span>
-          </Form.Item>
-          <div className={classes.btnmain}>
+        <Form.Item
+          label="Password"
+          name="password"
+          rules={[{ required: true, message: "Please input your password!" }]}
+          className={classes.form_item}
+        >
+          <Input.Password onChange={passwordHandler} />
+          <span className={classes.err}>
+
+            {passwordErr}<br />
+            <span className={classes.err}>{err}</span>
+          </span>
+        </Form.Item>
+        <div className={classes.btnmain}>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }} className={classes.form_item}>
             <Button type="primary" htmlType="submit" onClick={submitHandler} className={classes.btn}>
               Submit
             </Button>
           </Form.Item>
-        <div className={classes.link}>
-        <Link to="/">dont have account register</Link>
-        </div>
+          <div className={classes.link}>
+            <Link to="/">dont have account register</Link>
           </div>
+        </div>
       </Form>
     </div>
   );

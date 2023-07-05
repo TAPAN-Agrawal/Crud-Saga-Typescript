@@ -3,7 +3,7 @@ import { Button, Space, Table, Tag } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Modal } from "antd";
-import { addData, deleteData, editData, getData } from "../../Redux/Actions/Action";
+import { addData, deleteData, editData, getData, statusChange } from "../../Redux/Actions/Action";
 import { RootState } from "@/Redux/Store/RootReducer";
 import classes from './Dashboard.module.css'
 import Cardcomp from "../Card/Cardcomp";
@@ -16,10 +16,13 @@ function Dashboard() {
     id: number,
     Title: string,
     subTitle: string,
+    status?: string
+
   }
   interface Info {
     Title: string,
-    subTitle: string
+    subTitle: string,
+    status?: string
   }
 
 
@@ -28,19 +31,17 @@ function Dashboard() {
   const navigate = useNavigate()
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [info, setInfo] = useState<Info>({ Title:"", subTitle:"" });
+  const [info, setInfo] = useState<Info>({ Title: "", subTitle: "", status: "inprogress" });
   const [type, setType] = useState("add");
   const [titleErr, settitleErr] = useState("")
   const [subtitleErr, setsubtitleErr] = useState("")
 
   const TitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.trim();
-   
-      console.log("value",value);
-      console.log("Title",info.Title);
-      
-      
-   
+
+
+
+
     if (value === "") {
       settitleErr("Title is required")
     }
@@ -89,7 +90,7 @@ function Dashboard() {
   };
 
   const addHandler = () => {
-    setInfo({ Title: "", subTitle: "", })
+    setInfo({ Title: "", subTitle: "", status: "inprogress", })
     settitleErr("")
     setsubtitleErr("")
 
@@ -107,6 +108,18 @@ function Dashboard() {
 
   const backHandler = () => {
     navigate("/welcome");
+  }
+
+  const handleStatus = (record: Record) => {
+    const newrecord = record;
+    if (newrecord.status === "inprogress") {
+      newrecord.status = "completed"
+    }
+    else {
+      newrecord.status = "inprogress"
+    }
+
+    dispatch(statusChange(newrecord))
   }
 
   const columns = [
@@ -134,11 +147,11 @@ function Dashboard() {
 
   useEffect(() => {
     dispatch(getData());
-    console.log("userData", userData);
+
   }, []);
 
   return (
-    
+
     <div className={classes.main}>
       <Button onClick={backHandler} style={{ backgroundColor: "blue", color: "white" }} className={classes.back}>Back</Button>
 
@@ -182,16 +195,17 @@ function Dashboard() {
               id={item.id}
               Title={item.Title}
               subTitle={item.subTitle}
+              status={item.status}
               onEdit={() => { handleEdit(item) }}
               onDelete={() => { handleDelete(item.id) }}
-
+              onStatus={() => { handleStatus(item) }}
             />
           ))
         }
       </div>
 
-    
-  </div>
+
+    </div>
   );
 }
 

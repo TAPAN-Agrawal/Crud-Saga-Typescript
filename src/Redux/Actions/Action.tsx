@@ -10,7 +10,7 @@ export interface AddEdit {
   id?: number,
   Title: string,
   subTitle: string,
- 
+ status?: string,
 }
 
 
@@ -49,5 +49,12 @@ export const deleteData = (id: number) => {
   return {
     type: 'DELETE_DATA',
     payload: id
+  }
+}
+
+export const statusChange = (data: AddEdit) => {
+  return {
+    type: 'STATUS_CHANGE',
+    payload: data
   }
 }

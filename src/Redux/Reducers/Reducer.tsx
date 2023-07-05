@@ -14,6 +14,7 @@ interface Arr {
     id: number,
     Title: string,
     subTitle: string,
+    status?: string
 }
 export interface StateInterface {
 
@@ -30,6 +31,7 @@ export interface StateInterface {
 
 const initialState: StateInterface = {
 
+        
     name: " ",
     password: " ",
     date: "",
@@ -58,6 +60,8 @@ export const todos = (state: StateInterface = initialState, action: Action) => {
                 ...state,
                 arr: action.payload
             }
+
+            
 
 
 

@@ -9,6 +9,7 @@ interface ResponseData {
   id: number;
   Title: string;
   subTitle: string;
+  status?: boolean
 }
 
 interface ActionAddData {
@@ -19,6 +20,11 @@ interface ActionAddData {
 interface ActionDeleteData {
   type: string,
   payload: number
+}
+
+interface Status {
+  type: string,
+  payload :number
 }
 
 export function* worker() {
@@ -71,6 +77,24 @@ export function* editworker(action: ActionAddData) {
   }
 }
 
+export function* editstatus(action:ActionAddData){
+  try {
+    const id = action.payload.id
+    const data = action.payload
+    yield call(
+      axios.put,
+      `http://localhost:3001/data/${id}`,
+      data
+    )
+    yield call(worker)
+    console.log("edit worker", data);
+
+  } catch (error) {
+
+  }
+
+}
+
 export function* deleteworker(action: ActionDeleteData) {
 
   try {
@@ -95,4 +119,5 @@ export function* watcher() {
   yield takeLatest("ADD_DATA", addworker);
   yield takeLatest("DELETE_DATA", deleteworker);
   yield takeLatest("EDIT_DATA", editworker);
+  yield takeLatest("STATUS_CHANGE",editstatus)
 }

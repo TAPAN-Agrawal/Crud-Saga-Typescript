@@ -7,8 +7,9 @@ import classes from './Register.module.css'
 import TextArea from "antd/es/input/TextArea";
 import { RadioChangeEvent } from "antd/lib/radio";
 import moment from "moment";
+import { useSelector } from "react-redux";
 
-
+import { RootState } from '@/Redux/Store/RootReducer';
 
 
 function Register() {
@@ -29,7 +30,11 @@ function Register() {
 
 
   const dispatch = useDispatch();
+  const credentialsName = useSelector((state: RootState) => state.todo.name)
+  const credentialsPass = useSelector((state: RootState) => state.todo.password)
+
   const navigate = useNavigate()
+
 
   const [info, setInfo] = useState<Info>({ name: " ", password: " ", date: "", gender: "", address: "" });
 
@@ -38,7 +43,7 @@ function Register() {
   const [dateErr, setdateErr] = useState("")
   const [genderErr, setgenderErr] = useState("")
   const [addressErr, setaddressErr] = useState("")
-
+  const [err, setErr] = useState("")
 
 
 
@@ -108,11 +113,22 @@ function Register() {
     }
   }
 
+  const dupliate = () => {
+    if (info.name === credentialsName) {
+      setErr("user  already exists")
+      
+    }
+    else {
+      setErr("")
+      
+    }
 
+  }
 
   const submitHandler = (e: FormEvent) => {
 
     e.preventDefault();
+
     if (info.name === " ") {
       setnameErr("name cannot be empty")
     }
@@ -129,18 +145,46 @@ function Register() {
       setaddressErr("Address cannot be empty")
     }
 
-
     if ((nameErr === "") && (info.name !== " ")
-      && (passwordErr === "") && (info.password !== " ")
-      && (dateErr === "") && (info.date !== "")
-      && (genderErr === "") && (info.gender !== "")
-      && (addressErr === "") && (info.address !== "")
-    ) {
-      console.log(info);
+    && (passwordErr === "") && (info.password !== " ")
+    && (dateErr === "") && (info.date !== "")
+    && (genderErr === "") && (info.gender !== "")
+    && (addressErr === "") && (info.address !== "")
+    && (info.name !== credentialsName)
+  ) {
+ 
+  
+    dispatch(addUserCredentials(info))
+    navigate("/login")
+  
+     
+  }
+  else if(
+    (nameErr === "") && (info.name !== " ")
+    && (passwordErr === "") && (info.password !== " ")
+    && (dateErr === "") && (info.date !== "")
+    && (genderErr === "") && (info.gender !== "")
+    && (addressErr === "") && (info.address !== "")
+    && (info.name === credentialsName)
+  ){
+    alert("user already axists")
+  }
+  else{
 
-      dispatch(addUserCredentials(info))
-      navigate("/login")
-    }
+  }
+
+    // if ((nameErr === "") && (info.name !== " ")
+    //   && (passwordErr === "") && (info.password !== " ")
+    //   && (dateErr === "") && (info.date !== "")
+    //   && (genderErr === "") && (info.gender !== "")
+    //   && (addressErr === "") && (info.address !== "")
+    //   && (err === "")
+    // ) {
+   
+        
+    
+
+    // }
 
 
 
@@ -225,6 +269,10 @@ function Register() {
 
             {addressErr}
           </span>
+          <span className={classes.err}>
+
+            {err}
+          </span>
         </Form.Item>
         <div className={classes.btn}>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }} >
@@ -232,7 +280,7 @@ function Register() {
               Submit
             </Button>
           </Form.Item>
-          <Link to="/login">already have account login?</Link>
+          <Link to="/login"> have account login?</Link>
 
         </div>
 
